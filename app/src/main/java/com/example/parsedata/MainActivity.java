@@ -10,8 +10,11 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,24 +23,23 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Instantiate the RequestQueue
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "https://www.google.com";
 
-        // Request a string response from the provided URL
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String apiUrl = "https://jsonplaceholder.typicode.com/todos";
+
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, apiUrl, null, new Response.Listener<JSONArray>() {
             @Override
-            public void onResponse(String response) {
-                Log.d("Main", "onResponse: "+ response.substring(0, 500));
+            public void onResponse(JSONArray response) {
+                Log.d("JSON", "onResponse: " + response.toString());
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("Error", "onErrorResponse: " + "Failed to get info!");
+                Log.d("JSON Error", "onErrorResponse: " + "Fetch failed!");
             }
         });
 
-        // Add request to the RequestQueue
-        queue.add(stringRequest);
+        queue.add(jsonArrayRequest);
+
     }
 }
