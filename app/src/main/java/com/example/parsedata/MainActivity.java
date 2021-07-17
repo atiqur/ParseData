@@ -19,14 +19,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
+    RequestQueue queue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        RequestQueue queue = Volley.newRequestQueue(this);
+        queue  = MySingleton.getInstance(this).getRequestQueue();
+//        Other equivalent implementations of the above statement:
+//        queue  = MySingleton.getInstance(MainActivity.this).getRequestQueue();
+//        queue  = MySingleton.getInstance(this.getApplicationContext()).getRequestQueue();
         String apiUrl = "https://jsonplaceholder.typicode.com/todos";
 
         JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, apiUrl, null, 
